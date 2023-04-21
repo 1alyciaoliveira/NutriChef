@@ -4,24 +4,88 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="stylesheet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets\style.css">
+
     <body>
-        <nav>
-            <img scr="" alt="Logo" id="logoImg">
-            <ul>
-                <li>Nav Bar</li>
-                <li>Nav Bar</li>
-                <li>Nav Bar</li>
-            </ul>
-        </nav>
+        <header>
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    <figure class="image is-128x128">
+                        <img src="https://bulma.io/images/placeholders/128x128.png">
+                    </figure>
+                </div>
+            </nav>  
+        </header>
 
 
-        <div class="landing-page">
-            <form>
-                <h1>What do you have in your fridge?</h1>
-                <i id="loop"></i>
-                <input placeholder="Type your ingredients here!">
-            </form>
+        <div class="section" id="landing-page">
+            <div class="container">
+                <div class="box">
+                <form>
+                    <h1 class="title has-text-centered">What do you have in your fridge?</h1>
+                    <input placeholder="Type your ingredients here!">
+                </form>
+            </div>
+            </div>
         </div>
+
+        <div class="section" id="recipe">
+            <div class="container">
+                <div class="columns">
+                    <div class="column">
+                        <div class="box">
+                            <div class="media-center">
+                                <figure class="image is-64x64">
+                                    <img src="./assets/logo.png">
+                                </figure>
+                            </div>
+                            <p id="name">Name</p>
+                            <p class="calories">Calories:</p>
+                            <p class="variable-1">Another info</p>
+                            <p class="variable-2">Another info</p>
+
+                            <button class="button" class="view-recipe">I want this one!</button>
+                        </div>
+                    </div>
+
+                    <div class="column">
+                        <div class="box">
+                            <div class="media-center">
+                                <figure class="image is-64x64">
+                                    <img src="./assets/logo.png">
+                                </figure>
+                            </div>
+                            <p id="name">Name</p>
+                            <p class="calories">Calories:</p>
+                            <p class="variable-1">Another info</p>
+                            <p class="variable-2">Another info</p>
+
+                            <button class="button" class="view-recipe">I want this one!</button>
+                        </div>
+                    </div>
+
+                    <div class="column">
+                        <div class="box">
+                            <div class="media-center">
+                                <figure class="image is-64x64">
+                                    <img src="./assets/logo.png">
+                                </figure>
+                            </div>
+                            <p id="name">Name</p>
+                            <p class="calories">Calories:</p>
+                            <p class="variable-1">Another info</p>
+                            <p class="variable-2">Another info</p>
+
+                            <button class="button" class="view-recipe">I want this one!</button>
+                        </div>
+                    </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
+        integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U="
+        crossorigin="anonymous"></script>
+        <script src="./script.js"></script>
     </body>
  
