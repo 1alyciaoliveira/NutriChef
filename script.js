@@ -1,20 +1,127 @@
-const searchBtn = document.querySelector('search-btn');
-const searchResultDiv = document.querySelector('search-result');
-const container = document.querySelector('.container');
-let searchQuery = ''; //leave it as an empty string so it can return the value added in the search bar.
-const APP_ID = 'e0fc7187';
-const APP_KEY = 'c99eb3d8eb3f0b6f476a1ba745ea630b';
-const baseURL = `https://api.edamam.com/search?q=${searchQuery}&app_id=${APP_ID}&app_key=${APP_KEY}&mealtype=${mealType}`;
+var searchBtn = $("#search-btn");
+var foodTypeButtons = $('button[name="foodType"]');
+var searchForm = $("form");
+var searchQuery = $("#ingredients");
+var selectedFoodType = "";
+var foodType = "";
+let recipes = [];
+// var APP_ID = 'e0fc7187';
+// var APP_KEY = 'c99eb3d8eb3f0b6f476a1ba745ea630b';
+const APP_KEY = "b87396b95d96489c874444040e12c773";
+const baseURL = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${APP_KEY}`;
+//var baseURL = `https://api.spoonacular.com/recipes/findByIngredients`;
 
-//Press the search button after add the ingredient and make it return the value that was added.
-searchBtn.addEventListener('click', (e) => {
-    e.preventDefault(); //prevent the page to update itself
-    searchQuery = e.target.querySelector('input').value;
-})
+// foodTypeButtons.on('click', function() {
+//   selectedFoodType = $(this).val();
+//   localStorage.setItem('foodType', selectedFoodType);
+//   baseURL = baseURL + `&mealtype=${foodType}`;
 
-async function fetchAPI () {
-    const baseURL = `https://api.edamam.com/search?q=${searchQuery}&app_id=${APP_ID}&app_key=${APP_KEY}&mealtype=${mealType}`;
-    const response = await fetch(baseURL);
-    const data = await response.json();
-    console.log(data);
+// });
+
+searchForm.on("submit", (event) => {
+  event.preventDefault();
+  const ingredients = searchQuery.val().split(',').map(word => word.trim()).join(',+');
+  localStorage.setItem("ingredients", ingredients);
+  fetchAPI();
+});
+
+async function fetchAPI() {
+//  var foodType = localStorage.getItem("foodType");
+  const ingredients = localStorage.getItem("ingredients");
+  const fetchURL = `${baseURL}&ingredients=${ingredients}`;
+  const response = await fetch(fetchURL);
+  recipes = await response.json();
+  const html = generateHTML(recipes);
+  //$("#recipe-container").html(html);
+  console.log(recipes);
+
 }
+
+function generateHTML(result, foodType) {
+  let html = "";
+
+  $.each(result, function (index, recipe) {
+    const label = recipe.label;
+    const image = recipe.image;
+    const url = recipe.url;
+//    const calories = recipe.calories.toFixed(2);
+    const variable1 = "Another info"; // Replace with your own variable
+    const variable2 = "Another info"; // Replace with your own variable
+    let container = $('.recipe-selection')
+
+    html = `
+      <div class="column">
+        <div class="box">
+          <div class="media-center">
+            <figure class="image is-64x64">
+              <img src="${image}">
+            </figure>
+          </div>
+          <p class="name">${label}</p>
+          <p class="variable-1">${variable1}</p>
+          <p class="variable-2">${variable2}</p>
+          <button class="button view-recipe" data-url="${url}">I want this one!</button>
+        </div>
+      </div>
+    `;
+    container.innerHTML += html;
+  });
+  return html;
+}
+
+/*async function fetchAPI() {
+  const mealtype = localStorage.getItem('foodType');
+  const ingredients = localStorage.getItem('ingredients');
+  var APP_ID = 'e0fc7187';
+  var APP_KEY = 'c99eb3d8eb3f0b6f476a1ba745ea630b';
+  const baseURL = `https://api.edamam.com/search?q=${ingredients}&app_id=${APP_ID}&app_key=${APP_KEY}&from=0&to=20&mealType=${mealtype}`;
+  const response = await fetch(baseURL);
+  const data = await response.json();
+  generateHTML(data.hits, mealtype);
+  $('#recipe-container').html(html);
+  console.log(data);
+}
+
+$.ajax({
+  url: `https://api.edamam.com/search?q=${ingredients}&app_id=${APP_ID}&app_key=${APP_KEY}&from=0&to=20&mealType=${mealtype}`,
+  method: 'GET',
+  dataType: 'json',
+  success: function(result) {
+    const html = generateHTML(result.hits, mealtype);
+    $('#recipe-container').html(html);
+  },
+  error: function(error) {
+    console.log('Error:', error);
+  }
+
+
+
+function generateHTML(result) {
+  let html = '';
+
+  $.each(result.hits, function(recipe) {
+    const label = recipe.label;
+    const image = recipe.image;
+    const url = recipe.url;
+    const calories = recipe.calories.toFixed(2);
+    const variable1 = 'Another info'; // Replace with your own variable
+    const variable2 = 'Another info'; // Replace with your own variable
+
+    html += `
+      <div class="column">
+        <div class="box">
+          <div class="media-center">
+            <figure class="image is-64x64">
+              <img src="${image}">
+            </figure>
+          </div>
+          <p class="name">${label}</p>
+          <p class="calories">Calories: ${calories}</p>
+          <p class="variable-1">${variable1}</p>
+          <p class="variable-2">${variable2}</p>
+          <button class="button view-recipe" data-url="${url}">I want this one!</button>
+        </div>
+      </div>
+    `;
+  return html;
+ });*/
