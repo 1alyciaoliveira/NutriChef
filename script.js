@@ -18,6 +18,22 @@ const baseURL = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${
 
 // });
 
+
+// searchBtn.addEventListener('click', (e) => {
+//   e.preventDefault();
+//   searchQuery = input.value;
+//   fetchAPIweather();
+//   fetchAPIforecast();
+//   saveCity();
+// });
+
+
+// async function fetchAPIweather () {
+//   const todayBaseURL = `https://api.openweathermap.org/data/2.5/weather?q=${searchQuery}&appid=${API_KEY}`;
+//   const todayInfo = await fetch(todayBaseURL).then(response => response.json());
+//   generateTodayHTML(todayInfo);
+// }
+
 searchForm.on("submit", (event) => {
   event.preventDefault();
   const ingredients = searchQuery.val().split(',').map(word => word.trim()).join(',+');
@@ -68,6 +84,7 @@ function generateHTML(result, foodType) {
   });
   return html;
 }
+
 
 /*async function fetchAPI() {
   const mealtype = localStorage.getItem('foodType');
