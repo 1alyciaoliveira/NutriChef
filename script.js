@@ -1,3 +1,5 @@
+console.log("hello world")
+let ingredients = "";
 var searchBtn = $("#search-btn");
 var foodTypeButtons = $('button[name="foodType"]');
 var searchForm = $("form");
@@ -11,20 +13,40 @@ const APP_KEY = "b87396b95d96489c874444040e12c773";
 const baseURL = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${APP_KEY}`;
 //var baseURL = `https://api.spoonacular.com/recipes/findByIngredients`;
 
+
+
+searchBtn.on("click", (e) => {
+  e.preventDefault();
+  // searchQuery = input.value;
+  ingredients = searchQuery.val().split(',').map(word => word.trim()).join(',+');
+  fetchRecipesAPI();
+ 
+});
+
+
+function ingredientStorage() {
+  localStorage.setItem("ingredients", ingredients);
+};
+
+
+async function fetchRecipesAPI () {
+  // formst url to do request
+  const fetchURL = `${baseURL}&ingredients=${ingredients}`;
+  // fetch recipes
+  const request = await fetch(fetchURL);
+
+
+  // convert request into a readable json
+  const recipesJson = await request.json(); // []
+  console.log(recipesJson)
+  generateHTML(recipesJson);
+}
+
 // foodTypeButtons.on('click', function() {
 //   selectedFoodType = $(this).val();
 //   localStorage.setItem('foodType', selectedFoodType);
 //   baseURL = baseURL + `&mealtype=${foodType}`;
 
-// });
-
-
-// searchBtn.addEventListener('click', (e) => {
-//   e.preventDefault();
-//   searchQuery = input.value;
-//   fetchAPIweather();
-//   fetchAPIforecast();
-//   saveCity();
 // });
 
 
@@ -34,35 +56,27 @@ const baseURL = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${
 //   generateTodayHTML(todayInfo);
 // }
 
-searchForm.on("submit", (event) => {
-  event.preventDefault();
-  const ingredients = searchQuery.val().split(',').map(word => word.trim()).join(',+');
-  localStorage.setItem("ingredients", ingredients);
-  fetchAPI();
-});
 
-async function fetchAPI() {
-//  var foodType = localStorage.getItem("foodType");
-  const ingredients = localStorage.getItem("ingredients");
-  const fetchURL = `${baseURL}&ingredients=${ingredients}`;
-  const response = await fetch(fetchURL);
-  recipes = await response.json();
-  const html = generateHTML(recipes);
-  //$("#recipe-container").html(html);
-  console.log(recipes);
+// async function fetchAPI() {
+// //  var foodType = localStorage.getItem("foodType");
+//   const ingredients = localStorage.getItem("ingredients");
+//   const fetchURL = `${baseURL}&ingredients=${ingredients}`;
+//   const response = await fetch(fetchURL);
+//   recipes = await response.json();
+//   const html = generateHTML(recipes);
+//   //$("#recipe-container").html(html);
+//   console.log(recipes);
 
-}
+// }
 
-function generateHTML(result, foodType) {
+function generateHTML(recipesJson) {
+
   let html = "";
 
-  $.each(result, function (index, recipe) {
-    const label = recipe.label;
+  $.each(recipesJson, function (index, recipe) {
+    const title = recipe.title;
     const image = recipe.image;
     const url = recipe.url;
-//    const calories = recipe.calories.toFixed(2);
-    const variable1 = "Another info"; // Replace with your own variable
-    const variable2 = "Another info"; // Replace with your own variable
     let container = $('.recipe-selection')
 
     html = `
@@ -73,17 +87,48 @@ function generateHTML(result, foodType) {
               <img src="${image}">
             </figure>
           </div>
-          <p class="name">${label}</p>
-          <p class="variable-1">${variable1}</p>
-          <p class="variable-2">${variable2}</p>
+          <p class="name">${title}</p>
           <button class="button view-recipe" data-url="${url}">I want this one!</button>
         </div>
       </div>
     `;
-    container.innerHTML += html;
+    container.append(html);
   });
+
   return html;
 }
+
+// function generateHTML(fetchRecipesAPI) {
+
+//   let html = "";
+
+  
+//   $.each(result, function (index, recipe) {
+//     const title = recipe.title;
+//     const image = recipe.image;
+//     const url = recipe.url;
+// //    const calories = recipe.calories.toFixed(2);
+// //    const variable1 = "Another info"; // Replace with your own variable
+// //    const variable2 = "Another info"; // Replace with your own variable
+//     let container = $('.recipe-selection')
+
+//     html = `
+//       <div class="column">
+//         <div class="box">
+//           <div class="media-center">
+//             <figure class="image is-64x64">
+//               <img src="${image}">
+//             </figure>
+//           </div>
+//           <p class="name">${title}</p>
+//           <button class="button view-recipe" data-url="${url}">I want this one!</button>
+//         </div>
+//       </div>
+//     `;
+//     container.innerHTML += html;
+//   });
+//   return html;
+// }
 
 
 /*async function fetchAPI() {
