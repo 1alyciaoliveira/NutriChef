@@ -8,7 +8,7 @@ const APP_KEY = "b87396b95d96489c874444040e12c773";
 const baseURL = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${APP_KEY}`;
 let mealList = document.getElementById("recipe");
 
-
+//search button to submit ingredients
 searchBtn.on("click", (e) => {
   e.preventDefault();
   // searchQuery = input.value;
@@ -17,14 +17,15 @@ searchBtn.on("click", (e) => {
  
 });
 
+//event listener to "I want this one" btn
 mealList.addEventListener('click', getMealRecipe);
 
-
+//save ingredients in local storage
 function ingredientStorage() {
   localStorage.setItem("ingredients", ingredients);
 };
 
-
+//fetch the first endpoint to generate the list of recipes
 async function fetchRecipesAPI () {
   // formst url to do request
   const fetchURL = `${baseURL}&ingredients=${ingredients}`;
@@ -39,12 +40,12 @@ async function fetchRecipesAPI () {
 }
 
 
-
+//insert the HTML 
 function generateHTML(recipesJson) {
 
   let html = "";
 
-  //check the possibility to add the $ each inside a if, so we can have an else "Sorry, we didnt find any meal" 29:53
+
 
   $.each(recipesJson, function (index, recipe) {
     const title = recipe.title;
@@ -53,9 +54,6 @@ function generateHTML(recipesJson) {
     // const url = recipe.url;
     let container = $('.recipe-selection')
     
-    
-    
-//Crear botton, eventlistener y apendear a box
     html = `
       <div class="column" data-id="${id}">
         <div class="box"> 
@@ -76,32 +74,34 @@ function generateHTML(recipesJson) {
 }
 
 
-
+//fetchs the other endpoint info once we click at "I want this one" btn
 function getMealRecipe(e) {
   e.preventDefault();
   if(e.target.classList.contains('view-recipe')) {
     let mealItem = e.target.parentElement.parentElement;
     console.log(mealItem);
-    fetch(`https://api.spoonacular.com/recipes/${mealItem.dataset.id}/information/?apiKey=${APP_KEY}`);
-    console.log(mealItem.dataset.id);
-    //modal.classList.add('is-active');
-    generateModalHTML();
+    fetch(`https://api.spoonacular.com/recipes/${mealItem.dataset.id}/information/?apiKey=${APP_KEY}`)
+    .then(response => response.json())
+    .then(data => {generateModalHTML(data);
+      console.log(data);
+    }); 
   }
 }
 
-
-
-function generateModalHTML () {
+//Generate modal HTML
+function generateModalHTML (data) {
   let generatedModalHTML = '';
-  // let recipeImg = results.image;
-  // let recipeName = results.title;
+  //let recipeImg = data.image;
+  let recipeName = data.title;
+  let summary = data.summary;
   var modal = document.querySelector('.modal');
 
   generatedModalHTML +=
   `
             <div class="modal-background"></div>
             <div class="modal-content has-background-white">
-                    <h3 class="title mb-6"></h3>
+                    <h3 class="title mb-6">${recipeName}</h3>
+                    <p class="summary">${summary}</p>
             </div>
             </div>
   `;
@@ -109,15 +109,17 @@ function generateModalHTML () {
   modal.innerHTML = generatedModalHTML;
   
   const modalBg = document.querySelector('.modal-background');
-console.log(modalBg);
 
-modal.classList.add('is-active');
+  //Open modal
+  modal.classList.add('is-active');
 
-modalBg.addEventListener('click', () => {
-  modal.classList.remove('is-active');
-});
+  //Close modal
+  modalBg.addEventListener('click', () => {
+    modal.classList.remove('is-active');
+  });
 
 }
 
 
 
+  //MENTAL NOTE check the possibility to add the $ each inside a if, so we can have an else "Sorry, we didnt find any meal"
