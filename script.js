@@ -75,7 +75,7 @@ function generateHTML(recipesJson) {
   return html;
 }
 
-var modal = document.querySelector('.modal');
+
 
 function getMealRecipe(e) {
   e.preventDefault();
@@ -84,36 +84,40 @@ function getMealRecipe(e) {
     console.log(mealItem);
     fetch(`https://api.spoonacular.com/recipes/${mealItem.dataset.id}/information/?apiKey=${APP_KEY}`);
     console.log(mealItem.dataset.id);
-    modal.classList.add('is-active');
+    //modal.classList.add('is-active');
+    generateModalHTML();
   }
 }
 
 
 
-function generateModalHTML (results) {
+function generateModalHTML () {
   let generatedModalHTML = '';
-  let recipeImg = results.image;
-  let recipeName = results.title;
+  // let recipeImg = results.image;
+  // let recipeName = results.title;
+  var modal = document.querySelector('.modal');
 
   generatedModalHTML +=
   `
-  <div class="modal">
             <div class="modal-background"></div>
             <div class="modal-content has-background-white">
-                    <h3 class="title mb-6">${recipeName}</h3>
+                    <h3 class="title mb-6"></h3>
             </div>
             </div>
-    </div>
   `;
 
   modal.innerHTML = generatedModalHTML;
   
   const modalBg = document.querySelector('.modal-background');
+console.log(modalBg);
 
+modal.classList.add('is-active');
 
-modalBg.on('click', () => {
+modalBg.addEventListener('click', () => {
   modal.classList.remove('is-active');
 });
 
 }
+
+
 
