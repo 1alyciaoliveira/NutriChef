@@ -85,6 +85,47 @@ function generateHTML(result, foodType) {
   return html;
 }
 
+var viewRecipeBtn = document.querySelector('#view-recipe');
+const modalBg = document.querySelector('.modal-background');
+var modal = document.querySelector('.modal');
+
+viewRecipeBtn.addEventListener('click', (event) => {
+  event.preventDefault();
+  modal.classList.add('is-active');
+  fetchAPIRecipe();
+});
+
+modalBg.addEventListener('click', () => {
+  modal.classList.remove('is-active');
+});
+
+async function fetchAPIRecipe () {
+  const APIRecipeBaseURL = `https://api.spoonacular.com/recipes/${424571}/information/?apiKey=${APP_KEY}`;
+  const recipeBase = await fetch(APIRecipeBaseURL).then(response => response.json());
+  console.log(recipeBase);
+  generateModalHTML(recipeBase);
+
+function generateModalHTML (results) {
+  let generatedModalHTML = '';
+  let recipeImg = results.image;
+  let recipeName = results.title;
+
+  generatedModalHTML +=
+  `
+  <div class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content has-background-white">
+                    <h3 class="title mb-6">${recipeName}</h3>
+            </div>
+            </div>
+    </div>
+  `;
+
+  modal.innerHTML = generatedModalHTML;
+  
+}
+
+}
 
 /*async function fetchAPI() {
   const mealtype = localStorage.getItem('foodType');
