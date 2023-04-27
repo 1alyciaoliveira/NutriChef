@@ -5,3 +5,7 @@
     margin: 0px;
     box-sizing: border-box;
 }
+
+.navbar-item img {
+    max-height: 4.75rem
+}
