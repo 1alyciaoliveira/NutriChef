@@ -81,36 +81,61 @@ function getMealRecipe(e) {
     console.log(mealItem);
     fetch(`https://api.spoonacular.com/recipes/${mealItem.dataset.id}/information/?apiKey=${APP_KEY}`)
     .then(response => response.json())
-    .then(data => {generateModalHTML(data);
-      console.log(data);
+    .then(recipe => {generateModalHTML(recipe);
+      console.log(recipe);
     }); 
   }
 }
 
 //Generate modal HTML
-function generateModalHTML (data) {
+function generateModalHTML (recipe) {
   let generatedModalHTML = '';
   //let recipeImg = data.image;
   let recipeName = data.title;
   let summary = data.summary;
-  let sourceUrl = data.sourceUrl;
-  let instructions = data.analyzedInstructions;
   var modal = document.querySelector('.modal');
+
+    // empty array ready to recive API data
+    const nutritionQuery = [];
+
+  
+    recipe.extendedIngredients.forEach((ingredient) => {
+      const ingText = ingredient.original;
+  
+      // send ingText to API and recive the data
+      $.ajax({
+        method: "GET",
+        url: "https://api.api-ninjas.com/v1/nutrition?query=" + ingText,
+        headers: { "X-Api-Key": "cDxmeJpmVNhqPAllzxJX+A==kiF4qqk9jASFyhRS" },
+        contentType: "application/json",
+        success: function (result) {
+          console.log(result[0]);
+          nutritionQuery.push(result[0])
+          console.log("nutritionQuery", nutritionQuery)
+        },
+        error: function ajaxError(jqXHR) {
+          console.error("Error: ", jqXHR.responseText);
+        },
+      });
+  
+      
+    });
 
   generatedModalHTML +=
   `
             <div class="modal-background"></div>
             <div class="modal-content has-background-white">
-                <h3 class="title mb-6">${recipeName}</h3>
-                <p class="summary">${summary}</p>
-              <div class="sourceUrl">
-                <a href="${sourceUrl}" id="recipe-link">Check Recipe</a>
-              </div>
+              <h3 class="title mb-6">${recipeName}</h3>
+              <p class="summary">${summary}</p>
+            <div class="sourceUrl">
+              <a href="${sourceUrl}" id="recipe-link">Check Recipe</a>
+            </div>
+            <button>Nutritional Facts</button>
             </div>
   `;
 
   modal.innerHTML = generatedModalHTML;
-
+  
   console.log(sourceUrl);
   
   const modalBg = document.querySelector('.modal-background');
@@ -126,7 +151,3 @@ function generateModalHTML (data) {
   const link = document.getElementById("recipe-link");
   link.setAttribute("target", "_blank");
 }
-
-
-
-  //MENTAL NOTE check the possibility to add the $ each inside a if, so we can have an else "Sorry, we didnt find any meal"
