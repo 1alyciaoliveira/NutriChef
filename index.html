@@ -12,7 +12,7 @@
 </head>
     <body>
 
-        <section class="hero is-transparent is-fullheight">
+        <section class="hero is-transparent is-halfheight">
             <!-- Hero head: will stick at the top -->
             <div class="hero-head">
               <header class="navbar">
@@ -28,22 +28,35 @@
           
             <!-- Hero content: will be in the middle -->
             <div class="hero-body">
-              <div class="container has-text-right">
-                <p class="title">
-                  What's on your fridge?
-                </p>
-                <p class="subtitle">
-                  Proof that a mix of random ingredients <br>
-                can make delicious food.
-                </p>
-              </div>
-              <div class="colum mt-6">
-                <img src="assets/img/hero.jpg" alt="hero image">
-              </div>
+                <div class="colum mt-6">
+                    <img src="assets/img/hero1.png" alt="hero image" width="600" height="600">
+                </div>
+                <div class="container has-text-centered">
+                    <p class="title">
+                        What's on your fridge?
+                    </p>
+                    <p class="subtitle">
+                        Proof that a mix of random ingredients <br>
+                        can make delicious food.
+                    </p>      
+            
+                    <form id="search-section" style="display:flex; justify-content:center;">
+                        <div class="field has-addons">
+                            <div class="control">
+                                <input class="input is-primary is-normal" id="ingredients" type="text" placeholder="Ham, Egg, Cheese">
+                            </div>
+                            <div class="control">
+                                <button class="button is-primary" type="submit" id="search-btn">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
             </div>
     
           </section>
-        <!--Here we have the section to search the recipes-->
+        <!--Here we have the section to search the recipes
             <div class="section">
                 <div class="container" id="search-section">
                     <div class="box">
@@ -53,34 +66,13 @@
                                     <input id="ingredients" type="text" placeholder="Type your ingredients here!">
                                     <button type="submit" id="search-btn">Submit</button>
                                 </div>
-                        
+          -->              
             
-<!--            
-                            <div class="buttons has-text-centered">
-                                <button class="button is-info food-type" type="submit" name="foodType" value="Breakfast" id >
-                                    Breakfast
-                                    <i class="fa fa-coffee" aria-hidden="true"></i>
-                                </button>
-                
-                                <button class="button is-info food-type" type="submit" name="foodType" value="Lunch">
-                                    Lunch
-                                    <i class="fa fa-cutlery" aria-hidden="true"></i>
-                                </button>
-                
-                                <button class="button is-info food-type" type="button" name="foodType" value="Dinner">
-                                    Dinner
-                                    <i class="fa fa-solid fa-burger"></i>
-                                </button>
-                            </form>
-                        </div>         
-                    </div>
-                </div>
-            </div>             
-        -->
+
         <!--Here we will see the recipes-->
         <div class="section" id="recipe">
-            <div class="container recipe-selection">
-                <div class="columns">
+            <div class="container">
+                <div class="columns" id="recipe-selection">
 
                     <!--
                     <div class="column">
@@ -131,6 +123,8 @@
                         </div>
                     </div>
                 -->
+            </div>
+        </div>
     <!--Her we'll see the modal-->
     
     <div class="modal">

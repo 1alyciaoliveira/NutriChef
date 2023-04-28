@@ -51,14 +51,13 @@ function generateHTML(recipesJson) {
     const title = recipe.title;
     const image = recipe.image;
     const id = recipe.id;
-    // const url = recipe.url;
-    let container = $('.recipe-selection')
+    let container = $('#recipe-selection')
     
     html = `
       <div class="column" data-id="${id}">
         <div class="box"> 
           <div class="media-center">
-            <figure class="image is-64x64">
+            <figure class="image is-128x128">
               <img src="${image}">
             </figure>
           </div>
@@ -94,19 +93,25 @@ function generateModalHTML (data) {
   //let recipeImg = data.image;
   let recipeName = data.title;
   let summary = data.summary;
+  let sourceUrl = data.sourceUrl;
+  let instructions = data.analyzedInstructions;
   var modal = document.querySelector('.modal');
 
   generatedModalHTML +=
   `
             <div class="modal-background"></div>
             <div class="modal-content has-background-white">
-                    <h3 class="title mb-6">${recipeName}</h3>
-                    <p class="summary">${summary}</p>
-            </div>
+                <h3 class="title mb-6">${recipeName}</h3>
+                <p class="summary">${summary}</p>
+              <div class="sourceUrl">
+                <a href="${sourceUrl}" id="recipe-link">Check Recipe</a>
+              </div>
             </div>
   `;
 
   modal.innerHTML = generatedModalHTML;
+
+  console.log(sourceUrl);
   
   const modalBg = document.querySelector('.modal-background');
 
@@ -118,6 +123,8 @@ function generateModalHTML (data) {
     modal.classList.remove('is-active');
   });
 
+  const link = document.getElementById("recipe-link");
+  link.setAttribute("target", "_blank");
 }
 
 

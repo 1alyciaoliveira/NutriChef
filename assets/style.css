@@ -9,3 +9,21 @@
 .navbar-item img {
     max-height: 4.75rem
 }
+
+.hero-body {
+    padding: 10px 50px;
+}
+
+#recipe-selection {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#recipe-selection .column .box {
+    height: 270px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
