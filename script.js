@@ -7,6 +7,8 @@ let recipes = [];
 const APP_KEY = "b87396b95d96489c874444040e12c773";
 const baseURL = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${APP_KEY}`;
 let mealList = document.getElementById("recipe");
+let selectedRecipeURL = "";
+let selectedRecipeTitle = "";
 
 //search button to submit ingredients
 searchBtn.on("click", (e) => {
@@ -20,10 +22,6 @@ searchBtn.on("click", (e) => {
 //event listener to "I want this one" btn
 mealList.addEventListener('click', getMealRecipe);
 
-//save ingredients in local storage
-function ingredientStorage() {
-  localStorage.setItem("ingredients", ingredients);
-};
 
 //fetch the first endpoint to generate the list of recipes
 async function fetchRecipesAPI () {
@@ -44,8 +42,6 @@ async function fetchRecipesAPI () {
 function generateHTML(recipesJson) {
 
   let html = "";
-
-
 
   $.each(recipesJson, function (index, recipe) {
     const title = recipe.title;
@@ -80,7 +76,11 @@ function getMealRecipe(e) {
     let mealItem = e.target.parentElement.parentElement;
     fetch(`https://api.spoonacular.com/recipes/${mealItem.dataset.id}/information/?apiKey=${APP_KEY}`)
     .then(response => response.json())
-    .then(recipe => {generateModalHTML(recipe);
+    .then(recipe => {
+      selectedRecipeURL = recipe.sourceUrl;
+      selectedRecipeTitle = recipe.title;
+      generateModalHTML(recipe);
+      saveRecipeURL(selectedRecipeTitle, selectedRecipeURL);
     }); 
   }
 }
@@ -160,4 +160,34 @@ async function generateModalHTML (recipe) {
 
   const link = document.getElementById("recipe-link");
   link.setAttribute("target", "_blank");
+
 }
+
+  //save ingredients in local storage
+  function saveRecipeURL(title, url) {
+    let savedRecipe = window.localStorage.getItem("recipesURL") ? JSON.parse(window.localStorage.getItem("recipesURL")) : [];
+
+    if (!savedRecipe.find(recipe => recipe.title === title && recipe.url === url)) {
+      savedRecipe.push({title, url});
+      window.localStorage.setItem("recipesURL", JSON.stringify(savedRecipe));
+      showRecipeBtn();
+    }
+    }
+
+  function showRecipeBtn () {
+    let mostVistedRecipesContainer = document.querySelector('#most-visited-recipes');
+    let savedRecipe = window.localStorage.getItem("recipesURL") ? JSON.parse(window.localStorage.getItem("recipesURL")) : [];
+    let generatedHistoryHTML = '';
+    for(let i= savedRecipe.length - 1; i >= Math.max(savedRecipe.length -3, 0); i--) {
+      generatedHistoryHTML +=
+      `
+      <div class="column">
+        <a href="${savedRecipe[i].url}" class="button" id="previous-recipe-btn">${savedRecipe[i].title}</a>
+      </div>
+      `;
+    }
+    mostVistedRecipesContainer.innerHTML = generatedHistoryHTML;
+
+ }
+
+ showRecipeBtn();
