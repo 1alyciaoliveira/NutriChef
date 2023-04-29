@@ -178,6 +178,14 @@ async function generateModalHTML (recipe) {
     let mostVistedRecipesContainer = document.querySelector('#most-visited-recipes');
     let savedRecipe = window.localStorage.getItem("recipesURL") ? JSON.parse(window.localStorage.getItem("recipesURL")) : [];
     let generatedHistoryHTML = '';
+
+    generatedHistoryHTML +=
+    `
+    <div class="column">
+        <p>Last recipes: </p>
+    </div>
+    `
+
     for(let i= savedRecipe.length - 1; i >= Math.max(savedRecipe.length -3, 0); i--) {
       generatedHistoryHTML +=
       `
