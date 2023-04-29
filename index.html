@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,53 +11,55 @@
     <script src="https://kit.fontawesome.com/51d0cae634.js" crossorigin="anonymous"></script>
     <title>NutriChef</title>
 </head>
-    <body>
 
-        <section class="hero is-transparent is-halfheight">
-            <!-- Hero head: will stick at the top -->
-            <div class="hero-head">
-              <header class="navbar">
+<body>
+
+    <section class="hero is-transparent is-halfheight">
+        <!-- Hero head: will stick at the top -->
+        <div class="hero-head">
+            <header class="navbar">
                 <div class="container">
-                  <div class="navbar-brand">
-                    <a class="navbar-item">
-                      <img src="assets/img/1.png" alt="Logo">
-                    </a>
-                  </div>
+                    <div class="navbar-brand">
+                        <a class="navbar-item">
+                            <img src="assets/img/1.png" alt="Logo">
+                        </a>
+                    </div>
                 </div>
-              </header>
+            </header>
+        </div>
+
+        <!-- Hero content: will be in the middle -->
+        <div class="hero-body">
+            <div class="colum mt-6">
+                <img src="assets/img/hero1.png" alt="hero image" width="600" height="600">
             </div>
-          
-            <!-- Hero content: will be in the middle -->
-            <div class="hero-body">
-                <div class="colum mt-6">
-                    <img src="assets/img/hero1.png" alt="hero image" width="600" height="600">
-                </div>
-                <div class="container has-text-centered">
-                    <p class="title">
-                        What's on your fridge?
-                    </p>
-                    <p class="subtitle">
-                        Proof that a mix of random ingredients <br>
-                        can make delicious food.
-                    </p>      
-            
-                    <form id="search-section" style="display:flex; justify-content:center;">
-                        <div class="field has-addons">
-                            <div class="control">
-                                <input class="input is-primary is-normal" id="ingredients" type="text" placeholder="Ham, Egg, Cheese">
-                            </div>
-                            <div class="control">
-                                <button class="button is-primary" type="submit" id="search-btn">
-                                    <i class="fa-solid fa-magnifying-glass"></i>
-                                </button>
-                            </div>
+            <div class="container has-text-centered">
+                <p class="title">
+                    What's on your fridge?
+                </p>
+                <p class="subtitle">
+                    Proof that a mix of random ingredients <br>
+                    can make delicious food.
+                </p>
+
+                <form id="search-section" style="display:flex; justify-content:center;">
+                    <div class="field has-addons">
+                        <div class="control">
+                            <input class="input is-primary is-normal" id="ingredients" type="text"
+                                placeholder="Ham, Egg, Cheese">
                         </div>
-                    </form>
+                        <div class="control">
+                            <button class="button is-primary" type="submit" id="search-btn">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
 
             </div>
-    
-          </section>
-        <!--Here we have the section to search the recipes
+
+    </section>
+    <!--Here we have the section to search the recipes
             <div class="section">
                 <div class="container" id="search-section">
                     <div class="box">
@@ -66,15 +69,15 @@
                                     <input id="ingredients" type="text" placeholder="Type your ingredients here!">
                                     <button type="submit" id="search-btn">Submit</button>
                                 </div>
-          -->              
-            
+          -->
 
-        <!--Here we will see the recipes-->
-        <div class="section" id="recipe">
-            <div class="container">
-                <div class="columns" id="recipe-selection">
 
-                    <!--
+    <!--Here we will see the recipes-->
+    <div class="section" id="recipe">
+        <div class="container">
+            <div class="columns" id="recipe-selection">
+
+                <!--
                     <div class="column">
                         <div class="box">
                             <div class="media-center">
@@ -125,22 +128,79 @@
                 -->
             </div>
         </div>
-    <!--Her we'll see the modal-->
-    
-    <div class="modal">
-        <!--
+        <!--Her we'll see the modal-->
+
+        <div class="modal">
             <div class="modal-background"></div>
-            <div class="modal-content has-background-white">
-                    <h3 class="title mb-6">Title</h3>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p id="modal-title" class="modal-card-title">Title</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <p id="modal-summary" class="summary">summary</p>
+                    <div class="sourceUrl">
+                        <a href="${sourceUrl}" id="recipe-link">Check Recipe</a>
+                    </div>
+                    <div class="card">
+                        <div class="card-content">
+                            <p class="title">
+                                Nutritional Facts
+                            </p>
+                            <p class="subtitle">4 servings per recipe</p>
+                            <div class="content">
+                                <hr />
+                                <div class="columns" id="nutri-calories">
+                                    <div class="column has-text-weight-semibold is-four-fifths"> <b>Calories</b> </div>
+                                    <div class="column value"> ${calories}g </div>
+                                </div>
+                                <div class="columns" id="nutri-fat">
+                                    <div class="column is-four-fifths"> Total Fat </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                                <div class="columns" id="nutri-sat-fat">
+                                    <div class="column is-four-fifths"> Saturated Fat </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                                <div class="columns" id="nutri-cholesterol">
+                                    <div class="column is-four-fifths"> Cholesterol </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                                <div class="columns" id="nutri-sodium">
+                                    <div class="column is-four-fifths"> Sodium </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                                <div class="columns" id="nutri-carbs">
+                                    <div class="column is-four-fifths"> Total Carbohydrate </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                                <div class="columns" id="nutri-fiber">
+                                    <div class="column is-four-fifths"> Fiber </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                                <div class="columns" id="nutri-sugar">
+                                    <div class="column is-four-fifths"> Sugars </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                                <div class="columns" id="nutri-protein">
+                                    <div class="column is-four-fifths"> Protein </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button>Nutritional Facts</button>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success">Save changes</button>
+                    <button class="button">Cancel</button>
+                </footer>
             </div>
-            </div>
-        -->
-    </div>
+
+        </div>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
-        integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U="
-        crossorigin="anonymous"></script>
+            integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous"></script>
         <script src="./script.js"></script>
-    </body>
- 
+</body>
