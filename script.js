@@ -78,60 +78,70 @@ function getMealRecipe(e) {
   e.preventDefault();
   if(e.target.classList.contains('view-recipe')) {
     let mealItem = e.target.parentElement.parentElement;
-    console.log(mealItem);
     fetch(`https://api.spoonacular.com/recipes/${mealItem.dataset.id}/information/?apiKey=${APP_KEY}`)
     .then(response => response.json())
     .then(recipe => {generateModalHTML(recipe);
-      console.log(recipe);
     }); 
   }
 }
 
 //Generate modal HTML
-function generateModalHTML (recipe) {
+async function generateModalHTML (recipe) {
   let generatedModalHTML = '';
-  //let recipeImg = data.image;
-  let recipeName = data.title;
-  let summary = data.summary;
+  let recipeName = recipe.title;
+  let summary = recipe.summary;
+  let sourceUrl = recipe.sourceUrl;
   var modal = document.querySelector('.modal');
 
     // empty array ready to recive API data
-    const nutritionQuery = [];
+  const nutritionQuery = [];
 
+  await Promise.all(recipe.extendedIngredients.map(async (ingredient) => {
+    const ingText = ingredient.original;
   
-    recipe.extendedIngredients.forEach((ingredient) => {
-      const ingText = ingredient.original;
-  
-      // send ingText to API and recive the data
-      $.ajax({
-        method: "GET",
-        url: "https://api.api-ninjas.com/v1/nutrition?query=" + ingText,
-        headers: { "X-Api-Key": "cDxmeJpmVNhqPAllzxJX+A==kiF4qqk9jASFyhRS" },
-        contentType: "application/json",
-        success: function (result) {
-          console.log(result[0]);
-          nutritionQuery.push(result[0])
-          console.log("nutritionQuery", nutritionQuery)
-        },
-        error: function ajaxError(jqXHR) {
-          console.error("Error: ", jqXHR.responseText);
-        },
+    const response = await fetch("https://api.api-ninjas.com/v1/nutrition?query=" + ingText, {
+        headers: { "X-Api-Key": "cDxmeJpmVNhqPAllzxJX+A==kiF4qqk9jASFyhRS" }
       });
-  
-      
-    });
+
+    const result = await response.json();
+    nutritionQuery.push(result[0]);
+
+    console.log(nutritionQuery);
+
+    }));
 
   generatedModalHTML +=
   `
-            <div class="modal-background"></div>
-            <div class="modal-content has-background-white">
-              <h3 class="title mb-6">${recipeName}</h3>
-              <p class="summary">${summary}</p>
-            <div class="sourceUrl">
-              <a href="${sourceUrl}" id="recipe-link">Check Recipe</a>
-            </div>
-            <button>Nutritional Facts</button>
-            </div>
+    <div class="modal-background"></div>
+    <div class="modal-content has-background-white">
+      <h3 class="title mb-6">${recipeName}</h3>
+      <p class="summary">${summary.replace(/\. /g, ".<br>")}</p>
+      <br>
+      <h3 class="title mb-1">Curious about the ingredients nutritional facts?</h3>
+    <div class="columns" id="nutriFacts">
+    `;
+    
+    for (let i=0; i < nutritionQuery.length; i++) {
+    generatedModalHTML +=
+    `
+      <div class="column" id="ing=${i}">
+        <div class="box">
+        <p><b>Ingredient:</b> ${nutritionQuery[i].name}</p>
+        <p><b>Calories:</b> ${nutritionQuery[i].calories}</p>
+        <p><b>Carbs:</b> ${nutritionQuery[i].carbohydrates_total_g}</p>
+        <p><b>Fat:</b> ${nutritionQuery[i].fat_total_g}</p>
+        <p><b>Protein:</b> ${nutritionQuery[i].protein_g}</p>
+        </div>
+      </div>
+  `;
+}
+
+  generatedModalHTML +=
+  `
+  </div>
+  <div class="sourceUrl">
+    <a href="${sourceUrl}" id="recipe-link">Check Recipe</a>
+  </div>
   `;
 
   modal.innerHTML = generatedModalHTML;
