@@ -38,7 +38,6 @@ async function fetchRecipesAPI() {
 
   // convert request into a readable json
   const recipesJson = await request.json(); // []
-  console.log(recipesJson);
   generateHTML(recipesJson);
 }
 
@@ -73,7 +72,6 @@ function generateHTML(recipesJson) {
 
 //fetchs the other endpoint info once we click at "I want this one" btn
 function getMealRecipe(e) {
-  e.preventDefault();
   if (e.target.classList.contains("view-recipe")) {
     //Open modal
     modal.classList.add("is-active");
@@ -124,20 +122,23 @@ async function generateModalHTML(recipe) {
       if (result[0] != undefined) {
         nutritionQuery.push(result[0]);
       }
-
-      console.log(nutritionQuery);
     })
   );
 
   const recipeTitleSelector = document.getElementById("recipeTitle");
   const recipeSummarySelector = document.getElementById("recipeSummary");
+  const recipeLinkBtn = document.querySelector("#recipe-link");
+
+  recipeLinkBtn.setAttribute("href", sourceUrl);
+  recipeLinkBtn.setAttribute("target", "_blank");
 
   recipeTitleSelector.innerText = recipeName;
   recipeSummarySelector.innerHTML = summary.replace(/\. /g, ".<br>");
 
+
   for (let i = 0; i < nutritionQuery.length; i++) {
-    console.log(nutritionQuery);
     generatedModalHTML += `
+
       <div class="column" id="ing=${i}">
         <div class="box">
         <p><b>Ingredient:</b> ${nutritionQuery[i].title}</p>
@@ -152,12 +153,7 @@ async function generateModalHTML(recipe) {
 
   // modal.innerHTML = generatedModalHTML;
 
-  console.log(sourceUrl);
-
-  const link = document.getElementById("recipe-link");
-  link.setAttribute("target", "_blank");
-
-  toggleLoadRecipeModal(true);
+toggleLoadRecipeModal(true);
 }
 
 /**
