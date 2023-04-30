@@ -31,6 +31,19 @@ mealList.addEventListener("click", getMealRecipe);
 
 //fetch the first endpoint to generate the list of recipes
 async function fetchRecipesAPI() {
+  let container = document.getElementById("recipe-selection");
+  container.innerHTML = `
+  <div class="container">
+    <div class="card">
+      <div class="card-content">
+        <div class="content has-text-centered">
+          Loading
+        </div>
+      </div>
+    </div>
+  </div>
+  `;
+
   // formst url to do request
   const fetchURL = `${baseURL}&ingredients=${ingredients}`;
   // fetch recipes
@@ -39,18 +52,19 @@ async function fetchRecipesAPI() {
   // convert request into a readable json
   const recipesJson = await request.json(); // []
   console.log(recipesJson);
+  container.innerHTML = "";
   generateHTML(recipesJson);
 }
 
 //insert the HTML
 function generateHTML(recipesJson) {
   let html = "";
+  let container = $("#recipe-selection");
 
   $.each(recipesJson, function (index, recipe) {
     const title = recipe.title;
     const image = recipe.image;
     const id = recipe.id;
-    let container = $("#recipe-selection");
 
     html = `
       <div class="column" data-id="${id}">
@@ -67,8 +81,6 @@ function generateHTML(recipesJson) {
     `;
     container.append(html);
   });
-
-  return html;
 }
 
 //fetchs the other endpoint info once we click at "I want this one" btn
@@ -83,7 +95,9 @@ function getMealRecipe(e) {
     modalBg.addEventListener("click", () => {
       modal.classList.remove("is-active");
     });
+
     let mealItem = e.target.parentElement.parentElement;
+
     fetch(
       `https://api.spoonacular.com/recipes/${mealItem.dataset.id}/information/?apiKey=${APP_KEY}`
     )
@@ -99,7 +113,6 @@ function getMealRecipe(e) {
 
 //Generate modal HTML
 async function generateModalHTML(recipe) {
-  let generatedModalHTML = "";
   let recipeName = recipe.title;
   let summary = recipe.summary;
   let sourceUrl = recipe.sourceUrl;
@@ -135,22 +148,56 @@ async function generateModalHTML(recipe) {
   recipeTitleSelector.innerText = recipeName;
   recipeSummarySelector.innerHTML = summary.replace(/\. /g, ".<br>");
 
-  for (let i = 0; i < nutritionQuery.length; i++) {
-    console.log(nutritionQuery);
-    generatedModalHTML += `
-      <div class="column" id="ing=${i}">
-        <div class="box">
-        <p><b>Ingredient:</b> ${nutritionQuery[i].title}</p>
-        <p><b>Calories:</b> ${nutritionQuery[i].calories}</p>
-        <p><b>Carbs:</b> ${nutritionQuery[i].carbohydrates_total_g}</p>
-        <p><b>Fat:</b> ${nutritionQuery[i].fat_total_g}</p>
-        <p><b>Protein:</b> ${nutritionQuery[i].protein_g}</p>
-        </div>
-      </div>
-  `;
-  }
+  let calories = 0;
+  let totalFats = 0;
+  let saturatedFats = 0;
+  let cholesterol = 0;
+  let sodium = 0;
+  let carbs = 0;
+  let fiber = 0;
+  let sugars = 0;
+  let protein = 0;
 
-  // modal.innerHTML = generatedModalHTML;
+  // add nutritional values up
+  nutritionQuery.forEach((nutri) => {
+    calories += nutri["calories"];
+    carbs += nutri["carbohydrates_total_g"];
+    totalFats += nutri["fat_total_g"];
+    saturatedFats += nutri["fat_saturated_g"];
+    cholesterol += nutri["cholesterol_mg"];
+    sodium += nutri["sodium_mg"];
+    fiber += nutri["fiber_g"];
+    sugars += nutri["sugar_g"];
+    protein += nutri["protein_g"];
+  });
+
+  // Nutri Table Selectors
+  const caloriesCellSelector = document.querySelector(
+    "#nutri-calories > .value"
+  );
+  const carbsCellSelector = document.querySelector("#nutri-carbs > .value");
+  const totalFatsCellSelector = document.querySelector("#nutri-fat > .value");
+  const saturatedFatsCellSelector = document.querySelector(
+    "#nutri-sat-fat > .value"
+  );
+  const cholesterolCellSelector = document.querySelector(
+    "#nutri-cholesterol > .value"
+  );
+  const sodiumCellSelector = document.querySelector("#nutri-sodium > .value");
+  const fiberCellSelector = document.querySelector("#nutri-fiber > .value");
+  const sugarsCellSelector = document.querySelector("#nutri-sugar > .value");
+  const proteinCellSelector = document.querySelector("#nutri-protein > .value");
+
+  // Append info inside the nutri table cells
+  caloriesCellSelector.innerText = Math.floor(calories) + "g";
+  totalFatsCellSelector.innerText = Math.floor(totalFats) + "g";
+  carbsCellSelector.innerText = Math.floor(carbs) + "g";
+  saturatedFatsCellSelector.innerText = Math.floor(saturatedFats) + "g";
+  cholesterolCellSelector.innerText = Math.floor(cholesterol) + "mg";
+  sodiumCellSelector.innerText = Math.floor(sodium) + "mg";
+  fiberCellSelector.innerText = Math.floor(fiber) + "mg";
+  sugarsCellSelector.innerText = Math.floor(sugars) + "g";
+  proteinCellSelector.innerText = Math.floor(protein) + "g";
 
   console.log(sourceUrl);
 
