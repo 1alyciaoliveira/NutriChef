@@ -51,7 +51,12 @@ async function fetchRecipesAPI() {
 
   // convert request into a readable json
   const recipesJson = await request.json(); // []
-  generateHTML(recipesJson);
+
+  if(recipesJson.length > 0) {
+    generateHTML(recipesJson);
+  } else {
+    notFound();
+  }
 }
 
 //insert the HTML
@@ -84,6 +89,7 @@ function generateHTML(recipesJson) {
 //fetchs the other endpoint info once we click at "I want this one" btn
 function getMealRecipe(e) {
   if (e.target.classList.contains("view-recipe")) {
+    e.preventDefault();
     //Open modal
     modal.classList.add("is-active");
     toggleLoadRecipeModal(false);
@@ -171,17 +177,11 @@ async function generateModalHTML(recipe) {
   });
 
   // Nutri Table Selectors
-  const caloriesCellSelector = document.querySelector(
-    "#nutri-calories > .value"
-  );
+  const caloriesCellSelector = document.querySelector("#nutri-calories > .value");
   const carbsCellSelector = document.querySelector("#nutri-carbs > .value");
   const totalFatsCellSelector = document.querySelector("#nutri-fat > .value");
-  const saturatedFatsCellSelector = document.querySelector(
-    "#nutri-sat-fat > .value"
-  );
-  const cholesterolCellSelector = document.querySelector(
-    "#nutri-cholesterol > .value"
-  );
+  const saturatedFatsCellSelector = document.querySelector("#nutri-sat-fat > .value");
+  const cholesterolCellSelector = document.querySelector("#nutri-cholesterol > .value");
   const sodiumCellSelector = document.querySelector("#nutri-sodium > .value");
   const fiberCellSelector = document.querySelector("#nutri-fiber > .value");
   const sugarsCellSelector = document.querySelector("#nutri-sugar > .value");
@@ -235,9 +235,7 @@ function saveRecipeURL(title, url) {
 }
 
 function showRecipeBtn() {
-  let mostVistedRecipesContainer = document.querySelector(
-    "#most-visited-recipes"
-  );
+  let mostVistedRecipesContainer = document.querySelector("#most-visited-recipes");
   let savedRecipe = window.localStorage.getItem("recipesURL")
     ? JSON.parse(window.localStorage.getItem("recipesURL"))
     : [];
@@ -249,11 +247,7 @@ function showRecipeBtn() {
     </div>
     `;
 
-  for (
-    let i = savedRecipe.length - 1;
-    i >= Math.max(savedRecipe.length - 3, 0);
-    i--
-  ) {
+  for (let i = savedRecipe.length - 1; i >= Math.max(savedRecipe.length - 3, 0);i--) {
     generatedHistoryHTML += `
       <div class="column">
         <a href="${savedRecipe[i].url}" class="button" id="previous-recipe-btn">${savedRecipe[i].title}</a>
@@ -264,3 +258,14 @@ function showRecipeBtn() {
 }
 
 showRecipeBtn();
+
+function notFound () {
+  let generatedNotFoundHTML = "";
+  let container = document.getElementById("recipe-selection");
+
+  generatedNotFoundHTML += `
+    <p>Sorry, we could not find any recipe with this ingredient.</p>
+  `
+  container.innerHTML = generatedNotFoundHTML;
+
+}
