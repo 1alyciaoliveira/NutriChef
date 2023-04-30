@@ -13,7 +13,6 @@
 </head>
 
 <body>
-
     <section class="hero is-transparent is-halfheight">
         <!-- Hero head: will stick at the top -->
         <div class="hero-head">
@@ -156,14 +155,80 @@
         <!--Her we'll see the modal-->
 
         <div class="modal">
-            <!--
             <div class="modal-background"></div>
-            <div class="modal-content has-background-white">
-                    <h3 class="title mb-6">Title</h3>
+            <div class="modal-card is-hidden" id="recipeInfoCard">
+                <header class="modal-card-head">
+                    <p id="recipeTitle" class="modal-card-title">Title</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <p id="recipeSummary" class="summary"></p>
+                    <div class="sourceUrl">
+                        <a href="${sourceUrl}" id="recipe-link">Check Recipe</a>
+                    </div>
+                    <div class="card">
+                        <div class="card-content">
+                            <p class="title">
+                                Nutritional Facts
+                            </p>
+                            <p class="subtitle">4 servings per recipe</p>
+                            <div class="content">
+                                <hr />
+                                <div class="columns" id="nutri-calories">
+                                    <div class="column has-text-weight-semibold is-four-fifths"> <b>Calories</b> </div>
+                                    <div class="column value"> ${calories}g </div>
+                                </div>
+                                <div class="columns" id="nutri-fat">
+                                    <div class="column is-four-fifths"> Total Fat </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                                <div class="columns" id="nutri-sat-fat">
+                                    <div class="column is-four-fifths"> Saturated Fat </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                                <div class="columns" id="nutri-cholesterol">
+                                    <div class="column is-four-fifths"> Cholesterol </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                                <div class="columns" id="nutri-sodium">
+                                    <div class="column is-four-fifths"> Sodium </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                                <div class="columns" id="nutri-carbs">
+                                    <div class="column is-four-fifths"> Total Carbohydrate </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                                <div class="columns" id="nutri-fiber">
+                                    <div class="column is-four-fifths"> Fiber </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                                <div class="columns" id="nutri-sugar">
+                                    <div class="column is-four-fifths"> Sugars </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                                <div class="columns" id="nutri-protein">
+                                    <div class="column is-four-fifths"> Protein </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button>Nutritional Facts</button>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success">Save changes</button>
+                    <button class="button">Cancel</button>
+                </footer>
             </div>
+
+            <div class="modal-card" id="loadingModalCard">
+                <div class="modal-card-body">
+                    Loading...
+                </div>
             </div>
-        -->
         </div>
+
+
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
