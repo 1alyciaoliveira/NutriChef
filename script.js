@@ -17,7 +17,7 @@ searchBtn.on("click", (e) => {
   // searchQuery = input.value;
   ingredients = searchQuery.val().split(',').map(word => word.trim()).join(',+');
   fetchRecipesAPI();
- 
+  ingredients = ''
 });
 
 //event listener to "I want this one" btn
