@@ -13,6 +13,7 @@ let selectedRecipeTitle = "";
 //search button to submit ingredients
 searchBtn.on("click", (e) => {
   e.preventDefault();
+  if(searchQuery.val().length === 0) return
   // searchQuery = input.value;
   ingredients = searchQuery.val().split(',').map(word => word.trim()).join(',+');
   fetchRecipesAPI();
