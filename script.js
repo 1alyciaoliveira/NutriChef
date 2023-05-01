@@ -12,8 +12,27 @@ const modal = document.querySelector(".modal");
 const modalBg = document.querySelector(".modal-background");
 let selectedRecipeTitle = "";
 
+/**
+ * This function toggles the loading of  the recipe cards
+ * @param {boolean} check true or false
+ */
+
+function toggleLoadRecipeCards(check) {
+  const recipeSelectionSelector = document.getElementById("recipe-selection");
+  const landingLoadingSelector = document.getElementById("loadingLandingPage");
+  if (check === true) {
+    landingLoadingSelector.classList.add("is-hidden");
+    recipeSelectionSelector.classList.remove("is-hidden");
+  } else {
+    landingLoadingSelector.classList.remove("is-hidden");
+    recipeSelectionSelector.classList.add("is-hidden");
+  }
+}
+
+
 //search button to submit ingredients
 searchBtn.on("click", (e) => {
+  toggleLoadRecipeCards(false)
   e.preventDefault();
   if (searchQuery.val().length === 0) return;
   // searchQuery = input.value;
@@ -22,6 +41,7 @@ searchBtn.on("click", (e) => {
     .split(",")
     .map((word) => word.trim())
     .join(",+");
+  
   fetchRecipesAPI();
   ingredients = "";
 });
@@ -31,19 +51,7 @@ mealList.addEventListener("click", getMealRecipe);
 
 //fetch the first endpoint to generate the list of recipes
 async function fetchRecipesAPI() {
-  let container = document.getElementById("recipe-selection");
-  container.innerHTML = `
-  <div class="container">
-    <div class="card">
-      <div class="card-content">
-        <div class="content has-text-centered">
-          Loading
-        </div>
-      </div>
-    </div>
-  </div>
-  `;
-
+  
   // formst url to do request
   const fetchURL = `${baseURL}&ingredients=${ingredients}`;
   // fetch recipes
@@ -53,6 +61,7 @@ async function fetchRecipesAPI() {
   const recipesJson = await request.json(); // []
 
   if(recipesJson.length > 0) {
+    
     generateHTML(recipesJson);
   } else {
     notFound();
@@ -82,6 +91,7 @@ function generateHTML(recipesJson) {
         </div>
       </div>
     `;
+    toggleLoadRecipeCards(true)
     container.append(html);
   });
 }
@@ -123,6 +133,7 @@ async function generateModalHTML(recipe) {
   // empty array ready to recive API data
   const nutritionQuery = [];
 
+  
   await Promise.all(
     recipe.extendedIngredients.map(async (ingredient) => {
       const ingText = ingredient.original;
@@ -208,6 +219,7 @@ toggleLoadRecipeModal(true);
 function toggleLoadRecipeModal(check) {
   const recipeInfoCardSelector = document.getElementById("recipeInfoCard");
   const loadingCardSelector = document.getElementById("loadingModalCard");
+
   if (check === true) {
     loadingCardSelector.classList.add("is-hidden");
     recipeInfoCardSelector.classList.remove("is-hidden");
