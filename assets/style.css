@@ -10,9 +10,6 @@
     max-height: 4.75rem
 }
 
-.hero-body {
-    padding: 10px 50px;
-}
 
 #recipe-selection {
     display: flex;
@@ -40,4 +37,8 @@
 
 .columns > div.column.value {
     font-weight: 700;
+}
+
+.modal .modal-card header {
+    background-color: #B7CBBF;
 }
