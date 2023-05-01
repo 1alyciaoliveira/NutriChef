@@ -69,7 +69,17 @@
         <div class="container">
             <div class="columns" id="recipe-selection"></div>
         </div>
-        <!--Her we'll see the modal-->
+            <div class="container">
+                <div class="card">
+                <div class="card-content is-hidden" id="loadingLandingPage">
+                    <div class="content has-text-centered">
+                    Loading
+                    </div>
+                </div>
+                </div>
+            </div>
+    
+        
 
         <div class="modal">
             <div class="modal-background"></div>
@@ -80,8 +90,6 @@
                 </header>
                 <section class="modal-card-body">
                     <p id="recipeSummary" class="summary"></p>
-                    
- 
                     <div class="card">
                         <div class="card-content">
                             <p class="title">
@@ -136,7 +144,7 @@
                         </div>
             </div>
 
-            <div class="modal-card" id="loadingModalCard">
+            <div class="modal-card is-hidden" id="loadingModalCard">
                 <div class="modal-card-body">
                     <i class="fas fa-spinner fa-pulse"></i>
                 </div>
