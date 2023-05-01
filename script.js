@@ -10,6 +10,7 @@ let mealList = document.getElementById("recipe");
 let selectedRecipeURL = "";
 const modal = document.querySelector(".modal");
 const modalBg = document.querySelector(".modal-background");
+const deleteBtn = document.querySelector(".delete");
 let selectedRecipeTitle = "";
 
 /**
@@ -35,7 +36,6 @@ searchBtn.on("click", (e) => {
   toggleLoadRecipeCards(false)
   e.preventDefault();
   if (searchQuery.val().length === 0) return;
-  // searchQuery = input.value;
   ingredients = searchQuery
     .val()
     .split(",")
@@ -79,7 +79,7 @@ function generateHTML(recipesJson) {
     const id = recipe.id;
 
     html = `
-      <div class="column" data-id="${id}">
+      <div class="column is-flex-direction-column is-justify-content-space-between is-align-items-center" data-id="${id}">
         <div class="box"> 
           <div class="media-center">
             <figure class="image is-128x128">
@@ -87,7 +87,7 @@ function generateHTML(recipesJson) {
             </figure>
           </div>
           <p class="name">${title}</p>
-          <button class="button view-recipe">I want this one!</button>
+          <button class="button is-small is-rounded is-primary view-recipe">I want this!</button>
         </div>
       </div>
     `;
@@ -96,7 +96,7 @@ function generateHTML(recipesJson) {
   });
 }
 
-//fetchs the other endpoint info once we click at "I want this one" btn
+//fetchs the other endpoint info once we click at "I want this" btn
 function getMealRecipe(e) {
   if (e.target.classList.contains("view-recipe")) {
     e.preventDefault();
@@ -108,6 +108,10 @@ function getMealRecipe(e) {
     modalBg.addEventListener("click", () => {
       modal.classList.remove("is-active");
     });
+
+    deleteBtn.addEventListener("click", () => {
+      modal.classList.remove("is-active");
+    })
 
     let mealItem = e.target.parentElement.parentElement;
 
@@ -253,6 +257,7 @@ function showRecipeBtn() {
     : [];
   let generatedHistoryHTML = "";
 
+  if (savedRecipe.length > 0) {
   generatedHistoryHTML += `
     <div class="column">
         <p>Last recipes: </p>
@@ -262,11 +267,15 @@ function showRecipeBtn() {
   for (let i = savedRecipe.length - 1; i >= Math.max(savedRecipe.length - 3, 0);i--) {
     generatedHistoryHTML += `
       <div class="column">
-        <a href="${savedRecipe[i].url}" class="button" id="previous-recipe-btn">${savedRecipe[i].title}</a>
+        <a href="${savedRecipe[i].url}" class="button is-small is-rounded is-primary is-outlined" id="previous-recipe-btn">${savedRecipe[i].title}</a>
       </div>
       `;
   }
   mostVistedRecipesContainer.innerHTML = generatedHistoryHTML;
+} else {
+  generatedHistoryHTML = "";
+}
+
 }
 
 showRecipeBtn();
@@ -276,7 +285,12 @@ function notFound () {
   let container = document.getElementById("recipe-selection");
 
   generatedNotFoundHTML += `
-    <p>Sorry, we could not find any recipe with this ingredient.</p>
+  <div class="column has-text-centered">
+    <div class="box is-justify-content-center">
+      <h1 class="is-size-3">Sorry, we could not find any recipe with this ingredient.</h1>
+      <p>Please, make sure your ingredients are in English and/or they are divided by comma (,).</p>
+    </div>
+  </div>
   `
   container.innerHTML = generatedNotFoundHTML;
 
