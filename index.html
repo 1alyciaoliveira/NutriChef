@@ -1,27 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="stylesheet.css"/>
-    <body>
-        <nav>
-            <img scr="" alt="Logo" id="logoImg">
-            <ul>
-                <li>Nav Bar</li>
-                <li>Nav Bar</li>
-                <li>Nav Bar</li>
-            </ul>
-        </nav>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/style.css">
+    <script src="https://kit.fontawesome.com/51d0cae634.js" crossorigin="anonymous"></script>
+    <title>NutriChef</title>
+</head>
 
-
-        <div class="landing-page">
-            <form>
-                <h1>What do you have in your fridge?</h1>
-                <i id="loop"></i>
-                <input placeholder="Type your ingredients here!">
-            </form>
+<body>
+    <section class="hero is-transparent is-halfheight">
+        <!-- Hero head: will stick at the top -->
+        <div class="hero-head mx-6">
+            <header class="navbar">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="#">
+                        <img src="assets/img/1.png" alt="Logo">
+                    </a>
+                </div>
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="columns is-align-items-center is-align-content-center" id="most-visited-recipes"></div>
+                    </div>
+                </div>
+            </header>
         </div>
-    </body>
- 
+
+        <!-- Hero content: will be in the middle -->
+        <div class="hero-body">
+            <div class="colum is-two-thirds">
+                <img src="assets/img/hero1.png" alt="hero image" width="600" height="600">
+            </div>
+            <div class="container has-text-centered">
+                <p class="title">
+                    What's on your fridge?
+                </p>
+                <p class="subtitle">
+                    Proof that a mix of random ingredients <br>
+                    can make delicious food.
+                </p>
+
+                <form id="search-section" style="display:flex; justify-content:center;">
+                    <div class="field has-addons">
+                        <div class="control">
+                            <input class="input is-primary is-normal" id="ingredients" type="text"
+                                placeholder="Ham, Egg, Cheese">
+                        </div>
+                        <div class="control">
+                            <button class="button is-primary" type="submit" id="search-btn">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+
+    <!--Here we will see the recipes-->
+    <div class="section" id="recipe">
+        <div class="container">
+            <div class="columns" id="recipe-selection"></div>
+        </div>
+            <div class="container">
+                <div class="card">
+                <div class="card-content is-hidden" id="loadingLandingPage">
+                    <div class="content has-text-centered">
+                        <i class="fas fa-spinner fa-pulse"></i>
+                    </div>
+                </div>
+                </div>
+            </div>
+    
+        
+
+        <div class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card is-hidden" id="recipeInfoCard">
+                <header class="modal-card-head">
+                    <p id="recipeTitle" class="modal-card-title is-flex-wrap-wrap">Title</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <p id="recipeSummary" class="summary pb-4 has-text-justified"></p>
+                    <div class="card">
+                        <div class="card-content">
+                            <p class="title">
+                                Nutritional Facts
+                            </p>
+                            <p class="subtitle">4 servings per recipe</p>
+                            <div class="content nutri-cells">
+                                <hr />
+                                <div class="columns" id="nutri-calories">
+                                    <div class="column has-text-weight-semibold is-four-fifths"> <b>Calories</b> </div>
+                                    <div class="column value"> ${calories}g </div>
+                                </div>
+                                <div class="columns" id="nutri-fat">
+                                    <div class="column is-four-fifths"> Total Fat </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                                <div class="columns" id="nutri-sat-fat">
+                                    <div class="column is-four-fifths"> Saturated Fat </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                                <div class="columns" id="nutri-cholesterol">
+                                    <div class="column is-four-fifths"> Cholesterol </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                                <div class="columns" id="nutri-sodium">
+                                    <div class="column is-four-fifths"> Sodium </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                                <div class="columns" id="nutri-carbs">
+                                    <div class="column is-four-fifths"> Total Carbohydrate </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                                <div class="columns" id="nutri-fiber">
+                                    <div class="column is-four-fifths"> Fiber </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                                <div class="columns" id="nutri-sugar">
+                                    <div class="column is-four-fifths"> Sugars </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                                <div class="columns" id="nutri-protein">
+                                    <div class="column is-four-fifths"> Protein </div>
+                                    <div class="column value"> 240 </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="section has-text-centered"> -->
+                    <div class="sourceUrl has-text-centered pt-4">
+                        <a class="button is-rounded is-primary" id="recipe-link">Check Recipe</a>
+                    </div>
+                <!-- </div> -->
+                </section>
+                    <!-- <section class="check-recipe">
+
+                    </section> -->
+            </div>
+
+            <div class="modal-card is-hidden" id="loadingModalCard">
+                <div class="modal-card-body">
+                    <i class="fas fa-spinner fa-pulse"></i>
+                </div>
+            </div>
+        </div>
+
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
+            integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous"></script>
+        <script src="/assets/script.js"></script>
+</body>
