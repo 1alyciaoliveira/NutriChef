@@ -1,17 +1,18 @@
 let ingredients = "";
-var searchBtn = $("#search-btn");
-var searchForm = $("form");
-var searchQuery = $("#ingredients");
-var foodType = "";
+let searchBtn = $("#search-btn");
+let searchForm = $("form");
+let searchQuery = $("#ingredients");
+let foodType = "";
 let recipes = [];
+let selectedRecipeURL = "";
+let selectedRecipeTitle = "";
+let mealList = document.getElementById("recipe");
 const APP_KEY = "b87396b95d96489c874444040e12c773";
 const baseURL = `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${APP_KEY}`;
-let mealList = document.getElementById("recipe");
-let selectedRecipeURL = "";
 const modal = document.querySelector(".modal");
 const modalBg = document.querySelector(".modal-background");
 const deleteBtn = document.querySelector(".delete");
-let selectedRecipeTitle = "";
+
 
 /**
  * This function toggles the loading of  the recipe cards
@@ -52,23 +53,19 @@ mealList.addEventListener("click", getMealRecipe);
 //fetch the first endpoint to generate the list of recipes
 async function fetchRecipesAPI() {
   
-  // formst url to do request
+  // format url to do request and fetch recipes
   const fetchURL = `${baseURL}&ingredients=${ingredients}`;
-  // fetch recipes
   const request = await fetch(fetchURL);
-
-  // convert request into a readable json
   const recipesJson = await request.json(); // []
 
   if(recipesJson.length > 0) {
-    
     generateHTML(recipesJson);
   } else {
     notFound();
   }
 }
 
-//insert the HTML
+//insert the recipe boxes HTML
 function generateHTML(recipesJson) {
   let html = "";
   let container = $("#recipe-selection");
@@ -104,11 +101,12 @@ function getMealRecipe(e) {
     modal.classList.add("is-active");
     toggleLoadRecipeModal(false);
 
-    //Close modal
+    //Close modal when clicking outside of it
     modalBg.addEventListener("click", () => {
       modal.classList.remove("is-active");
     });
 
+    //Close modal when clicking X
     deleteBtn.addEventListener("click", () => {
       modal.classList.remove("is-active");
     })
@@ -133,15 +131,11 @@ async function generateModalHTML(recipe) {
   let recipeName = recipe.title;
   let summary = recipe.summary;
   let sourceUrl = recipe.sourceUrl;
-
-  // empty array ready to recive API data
   const nutritionQuery = [];
 
-  
   await Promise.all(
     recipe.extendedIngredients.map(async (ingredient) => {
       const ingText = ingredient.original;
-
       const response = await fetch(
         "https://api.api-ninjas.com/v1/nutrition?query=" + ingText,
         {
@@ -158,6 +152,7 @@ async function generateModalHTML(recipe) {
     })
   );
 
+//Nutritional information
   const recipeTitleSelector = document.getElementById("recipeTitle");
   const recipeSummarySelector = document.getElementById("recipeSummary");
   const recipeLinkBtn = document.querySelector("#recipe-link");
@@ -233,7 +228,6 @@ function toggleLoadRecipeModal(check) {
   }
 }
 
-function resetModalLoading() {}
 
 //save ingredients in local storage
 function saveRecipeURL(title, url) {
@@ -249,6 +243,8 @@ function saveRecipeURL(title, url) {
     showRecipeBtn();
   }
 }
+
+//show last 3 visited recipes
 
 function showRecipeBtn() {
   let mostVistedRecipesContainer = document.querySelector("#most-visited-recipes");
@@ -280,6 +276,7 @@ function showRecipeBtn() {
 
 showRecipeBtn();
 
+//Show an alternative container if the ingredient wasnt found
 function notFound () {
   let generatedNotFoundHTML = "";
   let container = document.getElementById("recipe-selection");

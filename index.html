@@ -65,20 +65,22 @@
     <!--Here we will see the recipes-->
     <div class="section" id="recipe">
         <div class="container">
-            <div class="columns" id="recipe-selection"></div>
+            <div class="columns" id="recipe-selection"></div> <!-- Here we'll add the HTML through JS -->
         </div>
-            <div class="container">
-                <div class="card">
+
+    <!-- Loading icon -->
+        <div class="container">
+            <div class="card">
                 <div class="card-content is-hidden" id="loadingLandingPage">
                     <div class="content has-text-centered">
                         <i class="fas fa-spinner fa-pulse"></i>
                     </div>
                 </div>
-                </div>
             </div>
+        </div>
     
         
-
+    <!-- Modal -->
         <div class="modal">
             <div class="modal-background"></div>
             <div class="modal-card is-hidden" id="recipeInfoCard">
@@ -90,9 +92,7 @@
                     <p id="recipeSummary" class="summary pb-4 has-text-justified"></p>
                     <div class="card">
                         <div class="card-content">
-                            <p class="title">
-                                Nutritional Facts
-                            </p>
+                            <p class="title">Nutritional Facts</p>
                             <p class="subtitle">4 servings per recipe</p>
                             <div class="content nutri-cells">
                                 <hr />
@@ -135,17 +135,12 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="section has-text-centered"> -->
                     <div class="sourceUrl has-text-centered pt-4">
                         <a class="button is-rounded is-primary" id="recipe-link">Check Recipe</a>
                     </div>
-                <!-- </div> -->
                 </section>
-                    <!-- <section class="check-recipe">
-
-                    </section> -->
             </div>
-
+        <!-- Loading icon -->
             <div class="modal-card is-hidden" id="loadingModalCard">
                 <div class="modal-card-body">
                     <i class="fas fa-spinner fa-pulse"></i>
