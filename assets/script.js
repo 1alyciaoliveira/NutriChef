@@ -43,8 +43,10 @@ searchBtn.on("click", (e) => {
     .map((word) => word.trim())
     .join(",+");
   
-  fetchRecipesAPI();
-  ingredients = "";
+    let container = document.getElementById("recipe-selection");
+    container.innerHTML = "";
+    fetchRecipesAPI();
+    ingredients = "";
 });
 
 //event listener to "I want this one" btn
